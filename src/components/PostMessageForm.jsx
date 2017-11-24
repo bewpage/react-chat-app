@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
+import { createMessage } from '../api';
+
 class PostMessageForm extends Component {
     constructor(props){
         super(props);
         this.state = {
+            from: '',
             text: ''
         }
     }
@@ -19,6 +22,7 @@ class PostMessageForm extends Component {
         const { text } = this.state;
         console.log('Chat text: ', text);
         this.props.appendChatMessage(this.state.text);
+        createMessage(this.state);
     };
 
 

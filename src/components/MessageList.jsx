@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 
+import MessageItem from './MessageItem';
+
 
 class MessageList extends Component {
     render() {
-        console.log('MessageList', this.props.messages);
+        // console.log('MessageList', this.props.messages);
+        // console.log('test list', this.props.testMessage);
         return (
-            <div>
+            <div className='sc-message-list'>
                 <h5>Message List</h5>
-                <ul>
-                    {this.props.messages.map( message =>
-                            <li key={message.id}>{message.text}</li>)
+                <ul key={1}>
+                    {this.props.messages.map(message => {
+                        return(
+                            <MessageItem key={message.id} text={message.text} />)
+                    })
                     }
                 </ul>
             </div>

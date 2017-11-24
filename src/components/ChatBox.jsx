@@ -4,13 +4,16 @@ import MessageList from "./MessageList";
 import PostMessageForm from "./PostMessageForm";
 
 
+
 class ChatBox extends Component {
     constructor(props){
         super(props);
         this.state = {
+            test: [],
             messages: []
         }
     };
+
 
     appendChatMessage = (text) => {
         let newMessage = {
@@ -25,11 +28,26 @@ class ChatBox extends Component {
 
 
     render() {
+        console.log('test info', this.props.newTest);
+        let classList = [
+            "sc-chat-window"
+        ];
         return (
-            <div>
-                <hr/>
+            <div className={classList.join(' ')}>
                 <h4>Chat Box</h4>
-                <MessageList messages={this.state.messages}/>
+                <div>
+                    {
+                        this.props.newTest.map(data => {
+                            return(
+                                <div key={new Date().getTime()}>
+                                    <p><span>From</span>: {data.from}</p>
+                                    <p>Message: {data.text}</p>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+                <MessageList testMessage={this.state.test}  messages={this.state.messages}/>
                 <PostMessageForm appendChatMessage={this.appendChatMessage}/>
             </div>
         );

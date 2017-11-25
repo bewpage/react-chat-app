@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
 import { receivedMessage } from '../api';
-
 import ChatBox from "./ChatBox";
 
 

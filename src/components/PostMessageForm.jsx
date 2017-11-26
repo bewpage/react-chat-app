@@ -2,101 +2,83 @@ import React, { Component } from 'react';
 
 import { createMessage } from '../api';
 
+import SendIcon from './icons/SendIcon';
+import EmojiIcon from './icons/EmojiIcon';
+import EmojiPicker from './emoji-picker/EmojiPicker';
+
 class PostMessageForm extends Component {
     constructor(props){
         super(props);
         this.state = {
+            inputActive: false,
             from: 'User',
             text: '',
         }
     }
 
+
     handleAnyInputChange = (event, nameInState) => {
-        event.target.classList.add('active');
         this.setState({
             [nameInState]: event.target.value,
         });
-        this.showInputError(event.target.name);
     };
 
     submitChat = (event) => {
         event.preventDefault();
 
-        if(!this.showFormErrors()){
-            return console.log('form is invalid: do not submit');
-        }else{
-            console.log('form is valid: submit');
-            const { text } = this.state;
-            // console.log('Chat text: ', text);
-            this.props.appendChatMessage(this.state.text);
-            createMessage(this.state);
-            this.setState({
-                text: ''
-            });
-        }
-
+        const { text } = this.state;
+        // console.log('Chat text: ', text);
+        // console.log('test przed nami', this.state.text);
+        this.props.appendChatMessage(this.state.text);
+        createMessage(this.state);
+        this.setState({
+            text: ''
+        });
     };
 
 
-    showFormErrors(){
-        const inputs = document.querySelectorAll('input');
-        let isFormValid = true;
-
-        inputs.forEach(input => {
-            input.classList.add('active');
-            let isInputValid = this.showInputError(input.name);
-
-            if(!isInputValid){
-                isFormValid = false;
-            }
+    _handleEmojiPicked = (emoji) => {
+        this.props.onSubmit({
+            author: 'me',
+            type: 'emoji',
+            data: { emoji }
         });
-        return isFormValid;
-    }
+    };
 
-
-    showInputError(refName){
-        const validity = this.refs[refName].validity;
-        const label = document.getElementById(`${refName}Label`).textContent;
-        const error = document.getElementById(`${refName}Error`);
-
-        if(!validity.valid){
-            if (validity.valueMissing) {
-                error.textContent = `${label} is a required field`;
-            }
-            return false;
-        }
-        error.textContent = '';
-        return true;
-    }
 
 
 
     render(){
         return (
-            <div className='form-inline'>
-                <div className='form-group'>
-                    <div className='error' id='messageError' />
-                    <label id='messageLabel'>Message</label>
-                    <input type="text"
-                           name='message'
-                           ref='message'
-                           className='form-control'
-                           placeholder='Add a message'
-                           value={this.state.text}
-                           onChange={event => this.handleAnyInputChange(event, 'text')}
-                           required
-                    />
-                    <button className='btn btn-success'
-                            type='button'
-                            onClick={this.submitChat}
-
-                    >
-                        Submit
-                    </button>
+            <form className={`sc-user-input ${(this.state.inputActive ? 'active' : '')}`}>
+                <input
+                    className="sc-user-input--text"
+                    tabIndex="0"
+                    contentEditable="true"
+                    role="button"
+                    onFocus={() => { this.setState({ inputActive: true }); }}
+                    onBlur={() => { this.setState({ inputActive: false }); }}
+                    value={this.state.text}
+                    onChange={event => this.handleAnyInputChange(event, 'text')}
+                    placeholder="Write a reply..."
+                >
+                </input>
+                <div className="sc-user-input--buttons">
+                    <div className="sc-user-input--button"></div>
+                    <div className="sc-user-input--button">
+                        <EmojiIcon onEmojiPicked={this._handleEmojiPicked.bind(this)} />
+                    </div>
+                    <div className="sc-user-input--button">
+                        <SendIcon onClick={this.submitChat} />
+                    </div>
                 </div>
-            </div>
+            </form>
         )
     }
 }
 
 export default PostMessageForm;
+
+
+
+

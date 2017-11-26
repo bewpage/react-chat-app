@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import MessageList from "./MessageList";
 import PostMessageForm from "./PostMessageForm";
+import Header from "./Header";
 
 
 
@@ -34,19 +35,19 @@ class ChatBox extends Component {
         ];
         return (
             <div className={classList.join(' ')}>
-                <h4>Chat Box</h4>
-                <div>
-                    {
-                        this.props.newTest.map(data => {
-                            return(
-                                <div key={new Date().getTime()}>
-                                    <p><span>From</span>: {data.from}</p>
-                                    <p>Message: {data.text}</p>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+                <Header className=''/>
+                {/*<div>*/}
+                    {/*{*/}
+                        {/*this.props.newTest.map(data => {*/}
+                            {/*return(*/}
+                                {/*<div key={new Date().getTime()}>*/}
+                                    {/*<p><span>From</span>: {data.from}</p>*/}
+                                    {/*<p>Message: {data.text}</p>*/}
+                                {/*</div>*/}
+                            {/*)*/}
+                        {/*})*/}
+                    {/*}*/}
+                {/*</div>*/}
                 <MessageList testMessage={this.state.test}  messages={this.state.messages}/>
                 <PostMessageForm appendChatMessage={this.appendChatMessage}/>
             </div>

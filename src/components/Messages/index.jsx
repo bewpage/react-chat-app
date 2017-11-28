@@ -18,7 +18,7 @@ class Message extends Component {
     render () {
         let contentClassList = [
             "sc-message--content",
-            // (this.props.message.author === "me" ? "sent" : "received")
+            (this.props.from === this.props.user ? "sent" : "received")
         ];
         return (
             <div className="sc-message">
@@ -28,7 +28,6 @@ class Message extends Component {
                     }}></div>
                     {/*{this._renderMessageOfType(this.props.message.type)}*/}
                     <TextMessage text={this.props.message} />
-                    {/*{this.props.message}*/}
                 </div>
             </div>)
     }

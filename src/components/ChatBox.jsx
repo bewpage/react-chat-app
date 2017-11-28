@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
+import { receivedMessage } from '../api';
 import MessageList from "./MessageList";
 import PostMessageForm from "./PostMessageForm";
 import Header from "./Header";
+import ChatLogin from "./ChatLogin";
 
 
 
@@ -10,48 +12,80 @@ class ChatBox extends Component {
     constructor(props){
         super(props);
         this.state = {
-            test: [],
-            messages: []
+            isLogin: false,
+            user: '',
+            send: [],
+            received: []
         }
     };
 
+    componentDidMount() {
+        this.testReceivedMessage();
+
+    }
+
+    userLogin = (user) => {
+        this.setState({
+            user,
+            isLogin: true
+        });
+        console.log('new user', this.state.user)
+    };
 
     appendChatMessage = (text) => {
-        let newMessage = {
-            id: new Date().getTime(),
-            timestamp: new Date().getTime(),
-            text
-        };
+        console.log('text value from append chat', text);
         this.setState({
-            messages:[...this.state.messages, newMessage]
+            send: [...this.state.send, text]
+        });
+    };
+
+    testReceivedMessage = () => {
+        receivedMessage(data => {
+            const { text, from, createdAt } = data;
+            let newReceived = {
+                from,
+                text,
+                createdAt
+            };
+            this.setState({
+                received: [...this.state.received, newReceived]
+            });
         });
     };
 
 
     render() {
-        console.log('test info', this.props.newTest);
         let classList = [
-            "sc-chat-window"
+            "sc-chat-window",
+            (this.props.isOpen ? "opened" : "closed")
         ];
-        return (
-            <div className={classList.join(' ')}>
-                <Header className=''/>
-                {/*<div>*/}
-                    {/*{*/}
-                        {/*this.props.newTest.map(data => {*/}
-                            {/*return(*/}
-                                {/*<div key={new Date().getTime()}>*/}
-                                    {/*<p><span>From</span>: {data.from}</p>*/}
-                                    {/*<p>Message: {data.text}</p>*/}
-                                {/*</div>*/}
-                            {/*)*/}
-                        {/*})*/}
-                    {/*}*/}
-                {/*</div>*/}
-                <MessageList testMessage={this.state.test}  messages={this.state.messages}/>
-                <PostMessageForm appendChatMessage={this.appendChatMessage}/>
-            </div>
-        );
+
+        if(!this.state.isLogin){
+            return(
+                <div className={classList.join(' ')}>
+                    <ChatLogin userLogin={this.userLogin} />
+                </div>
+            )
+        }else{
+            return (
+                <div className={classList.join(' ')}>
+                    <Header className=''
+                            // teamName={this.props.agentProfile.teamName}
+                            teamName={this.state.user}
+                            // imageUrl={this.props.agentProfile.imageUrl}
+                            onClose={this.props.onClose}
+                    />
+                    <MessageList data={this.state}
+                                 user={this.state.user}
+                                 // receivedMessage={this.state.received}
+                    />
+                    <PostMessageForm appendChatMessage={this.appendChatMessage}
+                                     user={this.state.user}
+
+                    />
+                </div>
+            );
+        }
     }
 }
 

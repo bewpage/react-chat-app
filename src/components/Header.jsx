@@ -6,7 +6,7 @@ class Header extends Component {
         return (
             <div className="sc-header">
                 <img className="sc-header--img" src={this.props.imageUrl} alt="" />
-                <div className="sc-header--team-name">test{this.props.teamName} </div>
+                <div className="sc-header--team-name">{this.props.teamName} </div>
                 <div className="sc-header--close-button" onClick={this.props.onClose}>
                     <img src={closeIcon} alt="" />
                 </div>

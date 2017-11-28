@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { receivedMessage } from '../api';
 import ChatBox from "./ChatBox";
+import ChatLogin from "./ChatLogin";
 
 
 
@@ -22,10 +23,18 @@ class Main extends Component {
 
 
 
+
+
+
     render() {
+        let classList = [
+            "sc-chat-window",
+            (this.props.isOpen ? "opened" : "closed")
+        ];
         return (
             <div>
-                <ChatBox newTest={this.state.newTest}/>
+                <ChatLogin className={classList.join(' ')}/>
+                {/*<ChatBox newTest={this.state.newTest}/>*/}
             </div>
         );
     }

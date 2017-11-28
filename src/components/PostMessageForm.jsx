@@ -11,7 +11,7 @@ class PostMessageForm extends Component {
         super(props);
         this.state = {
             inputActive: false,
-            from: 'User',
+            from: this.props.user,
             text: '',
         }
     }
@@ -25,25 +25,27 @@ class PostMessageForm extends Component {
 
     submitChat = (event) => {
         event.preventDefault();
-
         const { text } = this.state;
-        // console.log('Chat text: ', text);
-        // console.log('test przed nami', this.state.text);
-        this.props.appendChatMessage(this.state.text);
-        createMessage(this.state);
-        this.setState({
-            text: ''
-        });
+        // console.log('co to za state', this.state)
+
+        if(text.length > 0){
+            console.log('text jest dluzszy niz 0');
+            this.props.appendChatMessage(this.state.text);
+            createMessage(this.state);
+            this.setState({
+                text: ''
+            });
+        }
     };
 
 
-    _handleEmojiPicked = (emoji) => {
-        this.props.onSubmit({
-            author: 'me',
-            type: 'emoji',
-            data: { emoji }
-        });
-    };
+    // _handleEmojiPicked = (emoji) => {
+    //     this.props.onSubmit({
+    //         author: 'me',
+    //         type: 'emoji',
+    //         data: { emoji }
+    //     });
+    // };
 
 
 
@@ -56,8 +58,8 @@ class PostMessageForm extends Component {
                     tabIndex="0"
                     contentEditable="true"
                     role="button"
-                    onFocus={() => { this.setState({ inputActive: true }); }}
-                    onBlur={() => { this.setState({ inputActive: false }); }}
+                    // onFocus={() => { this.setState({ inputActive: true }); }}
+                    // onBlur={() => { this.setState({ inputActive: false }); }}
                     value={this.state.text}
                     onChange={event => this.handleAnyInputChange(event, 'text')}
                     placeholder="Write a reply..."
@@ -66,7 +68,7 @@ class PostMessageForm extends Component {
                 <div className="sc-user-input--buttons">
                     <div className="sc-user-input--button"></div>
                     <div className="sc-user-input--button">
-                        <EmojiIcon onEmojiPicked={this._handleEmojiPicked.bind(this)} />
+                        {/*<EmojiIcon onEmojiPicked={this._handleEmojiPicked} />*/}
                     </div>
                     <div className="sc-user-input--button">
                         <SendIcon onClick={this.submitChat} />

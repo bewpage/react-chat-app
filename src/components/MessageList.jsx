@@ -12,7 +12,7 @@ class MessageList extends Component {
                 <div className='sc-message-list'>
                     <ul>
                         {this.props.data.received.map((message, i) => {
-                            console.log('test sprawdzic co received', message);
+                            // console.log('test sprawdzic co received', message);
                             return(
                                 <Message user={this.props.user} key={i} message={message.text} from={message.from}/>
                             )
